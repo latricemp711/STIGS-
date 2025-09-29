@@ -1,0 +1,37 @@
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
+
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.6189
+
+
+WN10-CC-000005 - Camera access from the lock screen must be disabled.
+
+1. Tenable Discovered STIGS FAILURE WN10-CC-000005
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Policies\Microsoft\Windows\Personalization\
+
+Value Name: NoLockScreenCamera
+
+Value Type: REG_DWORD
+Value: 1
+2. Followed advice given from Tenanble in the Check cololum
+3.There is no path \Personalization\ so it was created with powershell. Below is the code use to create path:
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization\"
+$name = "NoLockScreenCamera"
+$value = 1
+
+# Create path if it doesn't exist
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+4. Set the value to 1 with powershell code below:
+# Set the value
+Set-ItemProperty -Path $regPath -Name $name -Value $value -Type DWord
+5. Restarted the computer and check if value was there. The value was there
+6. Run Tenable and WN10-CC-000005 passed
