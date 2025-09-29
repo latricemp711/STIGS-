@@ -1,0 +1,41 @@
+
+
+
+WN10-AU-000500 - pass
+
+The Application event log size must be configured to 32768 KB or greater.
+
+Steps
+1. Tenable Discovered STIGS FAILURE
+
+WN10-AU-000500
+
+\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\
+
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\
+
+Value Name: MaxSize
+
+Value Type: REG_DWORD
+Value: 0x00008000 (32768) (or greater)
+
+2. Followed advice given from Tenanble in the Check cololum
+3. Found that EventLog\Application and value Maxsize doesn't exist
+4. Created the following pathway manually and value to log size
+ 	-- Right click on Windows > New > Key > EventLog
+ 	- Right click on EventLog > New > Key > Application
+ 	- - Right click on Application > New > DWORD > Name it MaxSize
+ 	- Right click Maxsize  > Modify - Set hex value to 8000 and decimal to 32768
+5. Restarted computer
+6. Run Tenable and WN10-AU-000500 passed
+
+Code Below:
+
+# Define registry path and desired value
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\"
+
+
+Set-ItemProperty -Path $regPath -Name "MaxSize" -Value 32768 -Type DWord
+
+
