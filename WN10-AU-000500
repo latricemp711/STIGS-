@@ -1,41 +1,38 @@
 
 
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
 
-WN10-AU-000500 - pass
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.6189
 
-The Application event log size must be configured to 32768 KB or greater.
+WN10-AU-000500 - The Application event log size must be configured to 32768 KB or greater.
 
-Steps
+Code Below:
+# Create the registry path if it doesn't exist
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\"
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+# Define registry path and desired value
+
+Set-ItemProperty -Path $regPath -Name "MaxSize" -Value 32768 -Type DWord
+
+
+ Verified: Steps
 1. Tenable Discovered STIGS FAILURE
-
-WN10-AU-000500
-
-\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\
-
-Registry Hive: HKEY_LOCAL_MACHINE
-Registry Path: \SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\
-
-Value Name: MaxSize
-
-Value Type: REG_DWORD
-Value: 0x00008000 (32768) (or greater)
-
 2. Followed advice given from Tenanble in the Check cololum
 3. Found that EventLog\Application and value Maxsize doesn't exist
 4. Created the following pathway manually and value to log size
  	-- Right click on Windows > New > Key > EventLog
  	- Right click on EventLog > New > Key > Application
- 	- - Right click on Application > New > DWORD > Name it MaxSize
+ 	- Right click on Application > New > DWORD > Name it MaxSize
  	- Right click Maxsize  > Modify - Set hex value to 8000 and decimal to 32768
 5. Restarted computer
 6. Run Tenable and WN10-AU-000500 passed
-
-Code Below:
-
-# Define registry path and desired value
-$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\"
-
-
-Set-ItemProperty -Path $regPath -Name "MaxSize" -Value 32768 -Type DWord
-
-
