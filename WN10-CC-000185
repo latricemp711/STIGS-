@@ -1,0 +1,21 @@
+WN10-CC-000185 - The default autorun behavior must be configured to prevent autorun commands.
+
+1. Tenable Discovered STIGS FAILURE WN10-CC-000185
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\
+
+Value Name: NoAutorun
+
+Value Type: REG_DWORD
+Value: 1
+2. Followed advice given from Tenanble in the Check cololum
+3.We see the value NoAutoRun is not there. Below is the code used to place the value:
+# Define registry path and value
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization\"
+$name = "NoAutorun"
+$value = 1
+
+# Set the value
+Set-ItemProperty -Path $regPath -Name $name -Value $value -Type DWord
+4. Restarted the computer and check if value was there. The value was there
+5. Run Tenable and WN10-CC-000185 passed
