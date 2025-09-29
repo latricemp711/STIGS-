@@ -1,0 +1,32 @@
+WN10-CC-000200 -Administrator accounts must not be enumerated during elevation.
+
+1. Tenable Discovered STIGS FAILURE WN10-CC-000200
+
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\CredUI\
+
+Value Name: EnumerateAdministrators
+
+Value Type: REG_DWORD
+Value: 0
+
+2. Followed advice given from Tenanble in the Check cololum
+
+3.Found that \CredUI\ and value EnumerateAdministrators doesn't exist
+4. Created the following pathway through powershell and value to log size: The code is below
+
+# Define registry path and value
+$regPath = "HKLM:: \SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\CredUI\"
+$name = "AllowOnlineID"
+$value = 0
+
+# Create path if it doesn't exist
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set the value
+Set-ItemProperty -Path $regPath -Name $name -Value $value -Type DWord
+
+5. Restarted the computer and check if value was there. The value was there
+6. Run Tenable and WN10-CC-000200 passed
