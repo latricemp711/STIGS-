@@ -1,0 +1,32 @@
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
+
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.6189
+
+
+WN10-SO-000255 -User Account Control must automatically deny elevation requests for standard users.
+
+1. Tenable Discovered STIGS FAILURE WN10-SO-000255
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\
+
+Value Name: ConsentPromptBehaviorUser
+
+Value Type: REG_DWORD
+Value: 0
+2. Followed advice given from Tenanble in the Check cololum
+3.  Value for  ConsentPromptBehaviorUser manually was changed entering value 0 | The code is below: 
+# Define registry path and desired value
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\policies\Explorer\"
+
+
+Set-ItemProperty -Path $regPath -Name "NoDriveTypeAutoRun" -Value 255 -Type DWord
+4. I went to the path and saw that the value was there 
+5. Retested with Tenable and STIG has passed. 
