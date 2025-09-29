@@ -1,3 +1,17 @@
+
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
+
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.6189
+
+
 WN10-AU-000505 -The Security event log size must be configured to 1024000 KB or greater
 
 1. Tenable Discovered STIGS FAILURE WN10-AU-000505
