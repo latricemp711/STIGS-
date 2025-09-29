@@ -1,0 +1,34 @@
+WN10-AU-000505 -The Security event log size must be configured to 1024000 KB or greater
+
+1. Tenable Discovered STIGS FAILURE WN10-AU-000505
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Policies\Microsoft\Windows\EventLog\Security\
+
+Value Name: MaxSize
+
+Value Type: REG_DWORD
+Value: 0x000fa000 (1024000) (or greater)
+2. Followed advice given from Tenanble in the Check cololum
+3. Found that EventLog\Security and value Maxsize doesn't exist
+4. Created the following pathway through powershell and value to log size: The code is below
+# Define registry path
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Security"
+
+# Check if the registry path exists, create if it doesn't
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force
+    Write-Host "Registry path created: $regPath"
+}
+
+# For example, setting the retention period for the security logs
+$maxLogSizeValue = 1024000  # Example: Set maximum size of event log (in bytes)
+$overWritePolicy = 0  # Example: Overwrite event log when full (0 = Do not overwrite)
+
+# Set values (if they do not exist)
+Set-ItemProperty -Path $regPath -Name "MaxSize" -Value $maxLogSizeValue -Force
+Set-ItemProperty -Path $regPath -Name "Retention" -Value $overWritePolicy -Force
+
+Write-Host "Remediation completed: $regPath configured with MaxSize and Retention"
+5. Restarted computer
+Run Tenable and WN10-AU-000500 passed
+
