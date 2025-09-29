@@ -1,0 +1,36 @@
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
+
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.618
+
+
+WN10-CC-000385 - Windows Ink Workspace must be configured to disallow access above the lock.
+
+1. Tenable Discovered STIGS FAILURE WN10-CC-000385
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \Software\Policies\Microsoft\WindowsInkWorkspace
+
+Value Name: AllowWindowsInkWorkspace
+Value Type: REG_DWORD
+Value data: 1
+2. Followed advice given from Tenanble in the Check column
+3. Found that \WindowsInWorkspace and the value AllowWindowsInWorkspace was not created: The below code set the value:
+# Define registry path and desired value
+$regPath = "HKLM:\Software\Policies\Microsoft\WindowsInkWorkspace"
+
+# Create the path if it doesn't exist
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+# Set EnumerateAdministrators to 0
+Set-ItemProperty -Path $regPath -Name "AllowWindowsInkWorkspace" -Value 1 -Type DWord
+4. Restarted the computer and check if value was there. The value was there
+5. Run Tenable and WN10-CC-000385 passed
