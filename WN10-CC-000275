@@ -1,0 +1,30 @@
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
+
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.6189
+
+WN10-CC-000275 - Local drives must be prevented from sharing with Remote Desktop Session Hosts.
+
+ Verified: Steps
+1. Tenable Discovered STIGS FAILURE
+2. Followed advice given from Tenanble in the Check cololum
+3. Found that EventLog\Application and value Maxsize doesn't exist
+4. Created the following pathway manually and value to log size
+ 	-Code Below:
+# Create the registry path if it doesn't exist
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\"
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+# Define registry path and desired value
+
+Set-ItemProperty -Path $regPath -Name " fDisableCdm" -Value 1 -Type DWord
+5. Restarted computer
+6. Run Tenable and WN10-CC-000275 passed
