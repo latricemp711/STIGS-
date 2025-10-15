@@ -1,0 +1,42 @@
+.NOTES
+    Author        : Latrice Postell
+    Date Created  : 2025-11-09
+    Last Modified : 2025-11-09
+    Version       : 1.0
+
+.TESTED ON
+    Date(s) Tested  : 2024-08-09
+    Tested By       : Latrice Postell
+    Systems Tested  : Windows Server 2019 Datacenter, Build 1809, Windows Pro 10 
+    PowerShell Ver. : 5.1.17763.618
+
+
+1. Tenable Discovered STIGS FAILURE WN10-CC-000365
+
+If the following registry value does not exist or is not configured as specified, this is a finding:
+
+Registry Hive: HKEY_LOCAL_MACHINE
+Registry Path: \SOFTWARE\Policies\Microsoft\Windows\AppPrivacy\
+
+Value Name: LetAppsActivateWithVoiceAboveLock
+
+Type: REG_DWORD
+Value: 0x00000002 (2)
+
+
+2. Followed advice given from Tenanble in the Check column
+3. Found that SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51\ was not created: The below code set the value:
+
+# Define registry path and desired value
+$regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy\
+"
+
+# Create the path if it doesn't exist
+if (-not (Test-Path $regPath)) {
+    New-Item -Path $regPath -Force | Out-Null
+}
+
+Set-ItemProperty -Path $regPath -Name "LetAppsActivateWithVoiceAboveLock" -Value 2 -Type DWord
+
+4. Restarted the computer and check if value was there. The value was there
+5. Run Tenable and WN10-CC-000365 passed
