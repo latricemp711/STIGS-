@@ -35,6 +35,6 @@ if (-not (Test-Path $regPath)) {
 
 Set-ItemProperty -Path $regPath -Name "NoToastApplicationNotificationOnLockScreen" -Value 1 -Type DWord
 
-4. Restarted the computer and check if value was there. The value was there
+4. Restarted the computer and check if value was there. The value was there 
 5. Run Tenable and WN10-UC-000015 passed
 
